@@ -12,15 +12,17 @@ import './index.scss'
 import Crumbs from './Breadcrumb'
 import logo from '../assets/logo.png'
 
+
 const { Header, Sider, Content } = Layout
 
 const Layouts = () => {
+  console.log('333');
   const [collapsed, setCollapsed] = useState(false)
   const {
     token: { colorBgContainer },
   } = theme.useToken()
   const {pathname} = useLocation()
-  console.log(pathname);
+
   return (
     <div>
       <Layout style={{ minHeight: '100vh' }}>

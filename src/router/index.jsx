@@ -1,35 +1,40 @@
-import {useRoutes} from 'react-router-dom'
-import LazyLoad from '../utils/LazyLoad '
+import { useRoutes, Navigate } from 'react-router-dom'
+import { LazyLoad } from '../utils'
 import Layouts from '../layout'
-
-const BaseRouter = () =>{
+import AuthRoute from '../components/AuthRoute'
+const BaseRouter = () => {
   let element = useRoutes([
+   
     {
-      path:'/',
-      element:<Layouts/>,
-      children:[
+      path: '/',
+      element: (
+        <AuthRoute>
+          <Layouts />
+        </AuthRoute>
+      ),
+      children: [
         {
-          index:true,
-          element:LazyLoad('Home')
+          index: true,
+          element: LazyLoad('Home'),
         },
         {
-          path:'article',
-          element:LazyLoad('Article')
+          path: 'article',
+          element: LazyLoad('Article'),
         },
         {
-          path:'publish',
-          element:LazyLoad('Publish')
+          path: 'publish',
+          element: LazyLoad('Publish'),
         },
-      ]
+      ],
     },
     {
-      path:'/login',
-      element:LazyLoad('Login')
+      path: '/login',
+      element: LazyLoad('Login'),
     },
     {
-      path:'*',
-      element:LazyLoad('NotFound')
-    }
+      path: '*',
+      element: <Navigate to="/" />,
+    },
   ])
   return element
 }
