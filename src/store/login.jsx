@@ -1,4 +1,4 @@
-import { makeAutoObservable } from 'mobx'
+import { makeAutoObservable, runInAction } from 'mobx'
 
 import { makePersistable, pausePersisting, startPersisting,isHydrated,clearPersistedStore,getPersistedStore} from 'mobx-persist-store'
 import { http } from '../utils'
@@ -18,13 +18,15 @@ class LoginStore {
       mobile,
       code,
     })
-    this.token = res.data.token
+    runInAction(()=>{
+      this.token = res.data.token
+    })
   }
-  // 暂停持久化
+  // 暂停本地持久化
   pauseStore() {
     pausePersisting(this)
   }
-  // 开始持久化
+  // 开始本地持久化
   startStore() {
     console.log('开始持久化');
     startPersisting(this)
@@ -33,11 +35,12 @@ class LoginStore {
   get isHydrated() {
     return isHydrated(this)
   }
-  // 删除持久化的数据
+  // 删除本地持久化的数据
   async clearStoredDate() {
+    this.token = ''
     await clearPersistedStore(this)
   }
-  // 取持久化的数据
+  // 取本地持久化的数据
   async getStoredData() {
     return getPersistedStore(this)
   }

@@ -1,5 +1,5 @@
 import axios from "axios"
-
+import {notification} from 'antd'
 
 const http = axios.create({
   baseURL:'http://geek.itheima.net/v1_0',
@@ -22,7 +22,10 @@ http.interceptors.response.use(response=> {
   return response.data
 }, error=> {
   const code = error.response.status
-  if(code ===400){
+  if(code ===401){
+    notification.error({
+      message:'token过期,请重新登录',
+    })
     localStorage.removeItem('TokenStore')
     window.location.href = '/login'
   }

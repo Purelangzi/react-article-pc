@@ -1,15 +1,9 @@
 import useStore from '../../store'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useEffect } from 'react'
 const AuthRoute = ({ children }) => {
-  console.log('AuthRoute')
   const { LoginStore } = useStore()
   const navigate = useNavigate()
-  // if (LoginStore.token) {
-  //   return <>{children}</>
-  // } else {
-  //   Navigate({to:'/login',replace:true})
-  // }
   useEffect(() => {
     if (!LoginStore.token) {
       navigate('/login', { replace: true })

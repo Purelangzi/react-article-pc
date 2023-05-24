@@ -20,21 +20,16 @@ const Login = () => {
     if (LoginStore.token) {
       navigate('/', { replace: true })
     }
-  }, []) 
+  }, [LoginStore.token]) 
   // 防止过多渲染
   if (LoginStore.token){
     return
   }
-  console.log('444');
   const onFinish = async (values) => {
     const { mobile, code } = values
     try {
       await LoginStore.login({ mobile, code })
       navigate('/', { replace: true })
-      // LoginStore.startStore()
-      // useEffect(() => {
-      //   navigate('/',{replace:true})
-      // }, [])
       notification.success({ message: '登录成功' })
     } catch (error) {
       message.error(error.message)
@@ -61,7 +56,7 @@ const Login = () => {
             maxWidth: 600,
           }}
           initialValues={{
-            mobile: '13333333333',
+            mobile: '13811111111',
             code: '246810',
             remember: true,
           }}
