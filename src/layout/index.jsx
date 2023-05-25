@@ -86,7 +86,7 @@ const Layouts = () => {
               {
                 key: '/publish',
                 icon: <UploadOutlined />,
-                label: <Link to="/publish">发布文章</Link>,
+                label: <Link to="/publish">文章管理</Link>,
               },
             ]}
           />

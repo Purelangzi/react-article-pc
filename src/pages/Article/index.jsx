@@ -52,7 +52,7 @@ const Article = () => {
       const { data } = await http.get('/mp/articles', { params })
       setArticleList({
         list: data.results,
-        count: data.table_count,
+        count: data.total_count,
       })
     } catch {}
   }
@@ -128,16 +128,6 @@ const Article = () => {
       dataIndex: 'status',
       key: 'status',
       render: (data) => StatusTag(data),
-      // render: (data) => {
-      //   if(data===1){
-      //     return <Tag color="default">草稿</Tag>
-      //   }else if(data===2){
-      //     return <Tag color="success">审核通过</Tag>
-      //   }else{
-      //     return <Tag color="error">审核失败</Tag>
-      //   }
-
-      // },
     },
     {
       title: '发布时间',

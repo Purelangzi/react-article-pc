@@ -4,7 +4,7 @@ import './index.scss'
 
 const breadcrumbNameMap = {
   '/article': '内容管理',
-  '/publish': '发布文章',
+  '/publish': '文章管理',
 }
 const  Crumbs= () => {
   const location = useLocation()
