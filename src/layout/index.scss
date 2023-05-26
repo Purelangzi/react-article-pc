@@ -1,10 +1,12 @@
-.demo-logo-vertical{
+.sider-logo-vertical{
   padding: 20px;
 }
-.user-info{
-  float: right;
-  margin-right: 100px;
-  .user-logout{
-    margin-left: 40px;
+.header-info{
+  display: flex;
+  align-items: center;
+  margin-right: 60px;
+  .system-theme{
+    margin-right: 60px;
   }
+  
 }

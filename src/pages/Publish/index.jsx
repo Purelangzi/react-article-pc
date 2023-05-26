@@ -1,22 +1,14 @@
-import {
-
-  Form,
-  Button,
-  Radio,
-  Input,
-  Upload,
-  Space,
-  Select,
-
-  notification
-} from 'antd'
+import {Form,Button, Radio,Input,Upload,Space,Select,notification} from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
-import { Link, useNavigate, useSearchParams } from 'react-router-dom'
-import {http} from '../../utils'
+import { useNavigate, useSearchParams } from 'react-router-dom'
+import {http} from '@/utils'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import './index.scss'
 import { useState,useEffect,useRef } from 'react'
+
+
+
 const Publish = () => {
   
   const [fileList,setFileList] = useState([])// 已上传的图片地址列表
@@ -24,54 +16,67 @@ const Publish = () => {
   
   const [imgCount,setImgCount] = useState(1) // 保存的图片数量
   let isCheckPass = true // 上传的图片是否检查格式通过
-  const fileListRef = useRef([]) // 声明图片的暂存仓库
-  const formRef = useRef(null)
+  const cacheImgList = useRef([]) // 声明已上传图片的暂存仓库
+  
   const [params] = useSearchParams()
   const articleId = params.get('id')
-   //获取当前上下文正在使用的 Form 实例
-
+  const navigate = useNavigate()
+  //获取当前上下文正在使用的 Form 实例
   const [form] = Form.useForm()
+
   useEffect(()=>{
-    const initArticle = async()=>{
-      const {data} = await http.get(`/mp/articles/${articleId}`)
+    const getArticleDetail = async()=>{
+      try {
+        const {data} = await http.get(`/mp/articles/${articleId}`)
+        // 设置表单的值
+        form.setFieldsValue({
+          ...data,
+          type:data.cover.type
+        })
+        const newImage = data.cover.images.map(url=>({url}))
+        setImgCount(data.cover.type)
+        setFileList(newImage)
+        cacheImgList.current = newImage
+      } catch {}
       
-      form.setFieldsValue({
-        ...data,
-        type:data.cover.type
-      })
     }
-    if(articleId && formRef.current){
-      initArticle()
+    if(articleId){
+      getArticleDetail()
     }
     
-  },[articleId])
-  const navigate = useNavigate()
+  },[articleId,form])
+  
   useEffect(() => {
+    const getChannelList = async () => {
+      try {
+        const res = await http.get('/channels')
+        setChannelsList(res.data.channels)
+      } catch {}
+    }
     getChannelList()
   }, [])
   
-  const getChannelList = async () => {
-    try {
-      const res = await http.get('/channels')
-      setChannelsList(res.data.channels)
-    } catch {}
-  }
+  
   const onRadioChange = e=>{
     const count = e.target.value
     setImgCount(count)
     // 当前没有已上传的图片
-    if(!fileListRef.current.length) return
+    if(!cacheImgList.current.length) return
     if(count ===1){
        // 单图，只展示第一张
-       setFileList([fileListRef.current[0]])
+       setFileList([cacheImgList.current[0]])
     }else if (count === 3){
-      setFileList(fileListRef.current.slice(-3))
+      // 三图，显示最新上传的三张
+      setFileList(cacheImgList.current.slice(-3))
+    }else{
+      // 无图
+      setFileList([])
     }
   }
   // 上传前的回调
   const onBeforeUpload = (_,fileList) => {
     const isJpgOrPng = fileList.every(item=>{
-     return item.type == 'image/jpeg' || item.type =='image/png'
+     return item.type === 'image/jpeg' || item.type ==='image/png'
     })
     if (!isJpgOrPng) {
       notification.error({message:'只能上传 JPG/PNG 格式的图片!'});
@@ -85,12 +90,13 @@ const Publish = () => {
   }
   //图片上传改变时的回调(上传中，上传完成，上传失败都会触发)
   const onUploadChange = ({fileList}) => {
+
     // 是否通过上传前的格式检查
     if(!isCheckPass) return 
     // 手动删除图片后
     if(!fileList.length){
       setFileList(fileList)
-      fileListRef.current = []
+      cacheImgList.current = []
       return
     }
     // fileList 当前的文件列表。
@@ -101,13 +107,14 @@ const Publish = () => {
       }
       return file
     })
-    console.log(newFileList,'newFileList');
-    // 把图片列表存入仓库一份
-    fileListRef.current = newFileList
+    // 把图片列表存入暂存图片仓库一份
+    cacheImgList.current = newFileList
     setFileList(newFileList)
 
   }
+  // 修改或发布文章
   const onFinish = async(values) => {
+
     const { channel_id, content, title, type } = values
     const params = {
       channel_id,
@@ -116,7 +123,7 @@ const Publish = () => {
       type,
       cover: {
         type: type,
-        images: fileList.map(item => item.response.data.url)
+        images: fileList.map(item => item.response?item.response.data.url:item.url)
       }
     }
     try {
@@ -143,8 +150,8 @@ const Publish = () => {
     maxCount:imgCount
   };
   return ( 
-    <div>
-      <Form labelCol={{span:8}} wrapperCol={{ span: 16 }} initialValues={{ type: 1 }} onFinish={onFinish} ref={formRef}>
+    <div className='publish'>
+      <Form labelCol={{span:4}} wrapperCol={{ span: 12 }} initialValues={{ type: 1 }} onFinish={onFinish}  form={form}>
         <Form.Item label="标题" name="title" rules={[{required:true,message: '请输入文章标题'}]}>
           <Input placeholder="请输入文章标题" style={{ width: 400 }} />
         </Form.Item>
@@ -179,10 +186,10 @@ const Publish = () => {
         <Form.Item label="内容" name="content" rules={[{ required: true, message: '请输入文章内容' }]}>
           <ReactQuill className="publish-quill" theme="snow" placeholder="请输入文章内容"/>
         </Form.Item>
-        <Form.Item wrapperCol={{ offset: 7 }}>
+        <Form.Item wrapperCol={{ offset: 4 }}>
             <Space>
               <Button size="large" type="primary" htmlType="submit">
-                {articleId?'编辑':'发布'}文章
+                {articleId?'修改':'发布'}文章
               </Button>
             </Space>
           </Form.Item>

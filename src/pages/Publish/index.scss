@@ -1,14 +1,6 @@
 .publish {
-  position: relative;
   .ql-container {
-    height: 400px !important;
+    height: 200px;
   }
 }
  
-.ant-upload-list {
-  .ant-upload-list-picture-card-container,
-  .ant-upload-select {
-    width: 146px;
-    height: 146px;
-  }
-}

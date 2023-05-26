@@ -1,4 +1,4 @@
-import Bar from '../../components/Bar'
+import Bar from '@/components/Bar'
 
 import './index.scss'
 

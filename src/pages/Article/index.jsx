@@ -15,9 +15,9 @@ import {
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons'
 import 'dayjs/locale/zh-cn'
 import locale from 'antd/es/date-picker/locale/zh_CN'
-import errorImg from '../../assets/error.png'
+import errorImg from '@/assets/error.png'
 import { useEffect, useState } from 'react'
-import { http } from '../../utils'
+import { http } from '@/utils'
 import { useNavigate } from 'react-router-dom'
 
 const { RangePicker } = DatePicker
@@ -37,6 +37,16 @@ const Article = () => {
     getChannelList()
   }, [])
   useEffect(() => {
+    // 获取所有文章列表
+    const getArticlelList = async () => {
+      try {
+        const { data } = await http.get('/mp/articles', { params })
+        setArticleList({
+          list: data.results,
+          count: data.total_count,
+        })
+      } catch {}
+    }
     getArticlelList()
   }, [params])
   // 获取所有频道列表
@@ -46,16 +56,7 @@ const Article = () => {
       setChannelsList(res.data.channels)
     } catch {}
   }
-  // 获取所有文章列表
-  const getArticlelList = async () => {
-    try {
-      const { data } = await http.get('/mp/articles', { params })
-      setArticleList({
-        list: data.results,
-        count: data.total_count,
-      })
-    } catch {}
-  }
+  
   const pageChange = (page) => {
     setParams({
       ...params,

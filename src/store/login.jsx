@@ -28,7 +28,6 @@ class LoginStore {
   }
   // 开始本地持久化
   startStore() {
-    console.log('开始持久化');
     startPersisting(this)
   }
   // 是否存储完成

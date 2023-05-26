@@ -1,7 +1,7 @@
 import { useRoutes, Navigate } from 'react-router-dom'
-import { LazyLoad } from '../utils'
-import Layouts from '../layout'
-import AuthRoute from '../components/AuthRoute'
+import { LazyLoad } from '@/utils'
+import Layouts from '@/layout'
+import AuthRoute from '@/components/AuthRoute'
 const BaseRouter = () => {
   let element = useRoutes([
    

@@ -1,4 +1,4 @@
-import logo from '../../assets/logo.png'
+import logo from '@/assets/logo.png'
 import './index.scss'
 import { useEffect } from 'react'
 import {
@@ -35,9 +35,6 @@ const Login = () => {
       message.error(error.message)
     }
   }
-  const onFinishFailed = (errorInfo) => {
-    console.log('Failed:', errorInfo)
-  }
   return (
     <div className="login">
       <Card className="login-container">
@@ -62,7 +59,6 @@ const Login = () => {
           }}
           validateTrigger={['onBlur', 'onChange']}
           onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
           autoComplete="off">
           <Form.Item
             label="手机号"

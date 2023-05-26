@@ -25,7 +25,7 @@ const  Crumbs= () => {
     },
   ].concat(extraBreadcrumbItems)
   return (
-    <div className="demo">
+    <div className="breadcrumb">
       <Breadcrumb items={breadcrumbItems} />
     </div>
   )

@@ -1,7 +1,7 @@
 import { makeAutoObservable } from 'mobx'
 import { makePersistable,clearPersistedStore } from 'mobx-persist-store'
 
-import { http } from '../utils'
+import { http } from '@/utils'
 class UserStore {
   constructor() {
     makeAutoObservable(this)
