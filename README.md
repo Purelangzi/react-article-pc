@@ -1,6 +1,6 @@
 # article-admin文章后台管理系统
 
-react18+react-dom+react-routerv6-dom+antd+mobx+axios+echart
+react18+antd+mobx+axios+echart
 
 ## 功能
 - [√] 登录和退出功能
