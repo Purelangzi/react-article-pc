@@ -11,10 +11,10 @@ react18+react-dom+react-router-dom+antd+mobx+axios+echart
 - [x] 文章编辑、发布、删除
 
 ## 效果图
-![image](https://github.com/Purelangzi/article-pc/blob/main/登录页.PNG)
-![image](https://github.com/Purelangzi/article-pc/blob/main/首页.PNG)
-![image](https://github.com/Purelangzi/article-pc/blob/main/内容管理页.PNG)
-![image](https://github.com/Purelangzi/article-pc/blob/main/文章管理页.PNG)
+![image](https://github.com/Purelangzi/react-article-pc/blob/main/登录页.PNG)
+![image](https://github.com/Purelangzi/react-article-pc/blob/main/首页.PNG)
+![image](https://github.com/Purelangzi/react-article-pc/blob/main/内容管理页.PNG)
+![image](https://github.com/Purelangzi/react-article-pc/blob/main/文章管理页.PNG)
 ### `npm start`
 
 ### `npm run build`
